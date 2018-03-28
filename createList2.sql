@@ -76,6 +76,24 @@ select Students.Sno from Students,SC where SC.Cno = 2 And Students.Ssex = '男' A
 select Students.Sname from Students,SC,Course where Students.Ssex = '男' And Course.Cname = '数据库' And Course.Cno = SC.Cno And SC.Sno = Students.Sno;
 select Second.Sno,Second.Sname from Students First,Students Second where First.Sname = '李勇' And First.Ssex = Second.Ssex And First.Sno != Second.Sno;
 select Students.Sno,Students.Sname from Students,SC First,SC Second where First.Sno = '201215001' And Second.Cno = First.Cno And Students.Sno = Second.Sno And First.Sno != Second.Sno group by Second.Sno having count(Second.Sno) >= 1; 
-select Students.Sno,Students.Sname from Students,SC where Cno in(
-	select Cno from SC where Sno = '201215001'
-	);
+
+select Sname from Students where Sno in(
+	select Sno from SC,Course where Course.Cpno = '5' and SC.Cno = Course.Cno group by Sno having count(SC.Sno) >= 1
+)
+select Cname,Cno from Course where Cpno =(
+	select Cno from Course where Cname = '数据库'
+)
+select Sno,Grade from SC where Grade >(
+	select Grade from SC,Students where Sname = '李勇' and Students.Sno = SC.Sno and SC.Cno = '2' 
+)
+select Students.Sno,Sname from Students,SC,Course where Cname = '数据库' and Students.sno = SC.sno and SC.Cno = Course.Cno and Grade = (
+	select Grade from SC,Course where Course.Cname = '数据库' and SC.Cno = Course.Cno
+)
+select First.Sno from SC First,SC Second where First.Cno = '1' and Second.Cno = '3' and First.Sno = Second.Sno;
+
+select Students.Sno,Sname from Students,SC,Course where Students.Sno = SC.Sno and SC.Cno = Course.Cno group by Students.Sno having count(Students.Sno) > 1
+
+
+
+
+	
